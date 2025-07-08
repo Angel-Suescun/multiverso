@@ -21,13 +21,13 @@ class NeuronaMultiversal:
         
         salidas_destino = sum(1 for e in otra_neurona.conexiones if e)
         total_destino = otra_neurona.entradas + salidas_destino
-        
+
         if total_origen >= 6:
-            print(f"{self.nombre} ya tiene el máximo de conexiones totales (6).")
+            print(f"{self.nombre} ya tiene el máximo de conexiones totales (3).")
             return
 
         if total_destino >= 6:
-            print(f"{otra_neurona.nombre} ya tiene el máximo de conexiones totales (6).")
+            print(f"{otra_neurona.nombre} ya tiene el máximo de conexiones totales (3).")
             return
 
         # Conectar

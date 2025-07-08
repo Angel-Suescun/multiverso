@@ -24,7 +24,7 @@ def conectar_universos(universos: list) -> None:
 
     # Inicialmente todos sin conexiones
     for u in universos:
-        u.conexiones = [None] * 6
+        u.conexiones = [None] * 3  # Máximo 3 salidas
         u.entradas = 0
 
     # Paso 1: asegurar 1 salida aleatoria por neurona
@@ -43,14 +43,14 @@ def conectar_universos(universos: list) -> None:
 
         destino = random.choice(posibles_destinos)
 
-        for i in range(6):
+        for i in range(3):  # Solo 3 slots disponibles
             if origen.conexiones[i] is None:
                 origen.conectar(destino, i)
                 break
 
-    # Paso 2: agregar entre 0 y 4 conexiones aleatorias adicionales por nodo
+    # Paso 2: agregar entre 0 y 2 conexiones aleatorias adicionales por nodo
     for origen in universos:
-        num_salidas_deseadas = random.randint(1, 5)
+        num_salidas_deseadas = random.randint(1, 3)  # Máximo 3 salidas
         conexiones_actuales = sum(1 for c in origen.conexiones if c)
         restantes = num_salidas_deseadas - conexiones_actuales
 
@@ -72,7 +72,7 @@ def conectar_universos(universos: list) -> None:
                 intentos -= 1
                 continue
 
-            for i in range(6):
+            for i in range(3):  # Solo 3 slots disponibles
                 if origen.conexiones[i] is None:
                     origen.conectar(destino, i)
                     restantes -= 1
@@ -88,7 +88,7 @@ def conectar_universos(universos: list) -> None:
                                if (o.entradas + sum(1 for c in o.conexiones if c)) < 6]
             if posibles_origenes:
                 origen = random.choice(posibles_origenes)
-                for i in range(6):
+                for i in range(3):  # Solo 3 slots disponibles
                     if origen.conexiones[i] is None:
                         origen.conectar(u, i)
                         break
@@ -105,7 +105,7 @@ def agregar_universo(universos, nombre):
     nueva = NeuronaMultiversal(id=nuevo_id, nombre=nombre, tipo=random.choice(TIPOS_UNIVERSOS))
     
     # Inicializar conexiones del nuevo universo
-    nueva.conexiones = [None] * 6
+    nueva.conexiones = [None] * 3  # Máximo 3 salidas
     nueva.entradas = 0
 
     # 1. SALIDAS: conectar el nuevo universo hacia otros (1-3 salidas)
@@ -128,7 +128,7 @@ def agregar_universo(universos, nombre):
             continue
             
         # Buscar un slot libre en el nuevo universo
-        for i in range(6):
+        for i in range(3):  # Solo 3 slots disponibles
             if nueva.conexiones[i] is None:
                 nueva.conectar(destino, i)
                 conexiones_salida += 1
@@ -151,7 +151,7 @@ def agregar_universo(universos, nombre):
             break
             
         # Buscar un slot libre en el universo origen
-        for i in range(6):
+        for i in range(3):  # Solo 3 slots disponibles
             if origen.conexiones[i] is None:
                 origen.conectar(nueva, i)
                 conexiones_entrantes += 1
@@ -168,7 +168,7 @@ def eliminar_universo(universos, id_eliminar):
 
     # Quitar todas las conexiones hacia él
     for u in universos:
-        for i in range(6):
+        for i in range(3):  # Solo 3 slots disponibles
             if u.conexiones[i] is not None and u.conexiones[i].id == id_eliminar:
                 u.conexiones[i] = None
                 objetivo.entradas -= 1
